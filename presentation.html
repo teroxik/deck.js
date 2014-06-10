@@ -52,12 +52,51 @@
 		</ul>
 	</li>
       	<li> Scalaz </li>
-      	<li> Bootstrap </li>
+      	<li> Bootstrap	 </li>
       </ul>
     </section>
 
     <section class="slide">
       <h1>Here</h1>
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+	
+	<ul>
+		<li> The coolest library noone uses. </li>
+		<li> Provides purely functional data structures to complement those from the Scala standard library </li>
+		<li> Requires deep understanding of functional programming idioms </li>
+		<li> The good parts of Scalaz </li>
+	</ul>
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>Typeclasses</h4>
+	3.show()
+	1.node(2.leaf, 3.node(4.leaf))
+	List(some(1), none).suml
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>Validation</h4>
+	"event 1 ok".success[String]
+	"event 1 failed!".failure[String]
+http://eed3si9n.com/learning-scalaz/Validation.html
+	 ("event 1 ok".success[String] |@| "event 2 failed!".failure[String] |@| "event 3 failed!".failure[String]) {_ + _ + _}
+	\/
+    </section>
+ 
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>Lenses</h4>
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>For experts</h4>
     </section>
 
     <!-- End slides. -->
