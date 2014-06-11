@@ -1,0 +1,85 @@
+Monoids, Semigroups, Monads, Functors
+Monoid
+-value which acts as identity
+-associative binary function 
+List(1, 2, 3) |+| List(4, 5, 6)
+-conjunction, multiplication, ordering, addition, option
+
+Functor
+-map identity over functor returns the same functor
+-func composition and then mapping must be the same as mapping one and then the other
+
+Typeclasses
+Foldable, option, …
+
+Equal
+1 ==1
+1 == "foo"
+1 === 1
+1 === “foo”
+1 =/= 2
+
+Order
+1 > 1.0
+1 gt 1.0
+1 ?|? 2
+lt, gt, lte, gte, min, and max
+
+Enum
+3 |-> 5
+3 |=> 5
+'A'.succ.succ.succ
+
+for {
+    x <- 1 |-> 50 if x.shows contains '7'
+} yield x
+
+Either
+\/
+1.some
+1.left
+1.right
+
+Functor
+has map function
+function is a functor
+(((x: Int) => x + 1) map (_ * 7))(5)
+
+lift to monad 
+(_: Int) * 2 is Int=>Int
+Functor[List].lift {(_: Int) * 2} is Option[Int] => Option[Int]
+List[Int] => List[Int] = <function1>
+
+applicative typeclass
+functor one param only. Otherwise we need to curry
+fmap takes a function and a functor and applies the function inside the functor value
+<*> takes a functor that has a function in it and another functor and extracts that function from the first functor and then maps it over the second one.
+
+5.some map (_ + 3)
+5.some flatMap (x => 3.some map (y => x + y))
+
+1.some >>= (x => 2.some >>= (y => (x + y).some))
+1.some >>= (x => 2.some map (y => x +y))
+
+5.some map ((_: Int) * (_: Int)).curried.map(_(5))
+5.some <*> ((_: Int) * 5).some
+^(3.some, 5.some) (_+_)
+(3.some |@| 5.some |@| 7.some) {_ + _ + _}
+
+3.some |+| 5.some (monoid)
+
+
+permutation
+List(1, 2, 3) <*> List((_: Int) * 0, (_: Int) + 100, (x: Int) => x * x)
+(List(“a”, “b”, “c”) |@| List(“a”, “b”, “c”)) {_ + _}
+
+pointed
+puts a value in pure context
+5.point[Option] map (_ + 1)
+5.pure[Option] map (_ + 1)
+
+
+Monads
+Monads are a natural extension applicative functors, and they provide a solution to the following problem: If we have a value with context, m a, how do we apply it to a function that takes a normal a and returns a value with a context.
+
+flatMap aliases >>=, ∗
