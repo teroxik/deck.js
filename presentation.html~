@@ -18,7 +18,7 @@
   <link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
 
   <!-- Style theme. More available in /themes/style/ or create your own. -->
-  <link rel="stylesheet" media="screen" href="themes/style/neon.css">
+  <link rel="stylesheet" media="screen" href="themes/style/web-2.0.css">
 
   <!-- Transition theme. More available in /themes/transition/ or create your own. -->
   <link rel="stylesheet" media="screen" href="themes/transition/vertical-slide.css">
@@ -92,11 +92,6 @@ http://eed3si9n.com/learning-scalaz/Validation.html
     <section class="slide">
       <h2>Scalaz</h2>
       <h4>Lenses</h4>
-    </section>
-
-    <section class="slide">
-      <h2>Scalaz</h2>
-      <h4>For experts</h4>
     </section>
 
     <!-- End slides. -->
