@@ -204,7 +204,7 @@
 
 
     <section class="slide">
-    <h2>Web Socket Actors</h2>
+    <h2>Web Sockets </h2>
 	<ul>
 	   <li>abstraction over data streams</li>
 	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
@@ -215,14 +215,66 @@
     </section>
 
     <section class="slide">
-    <h2>Sneak peak - sbt-web</h2>
+    <h2>Web Sockets - Iteratees</h2>
+	<pre>
+	    import play.api.mvc._
+            import play.api.libs.iteratee._
+            import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+            def socket = WebSocket.using[String] { request =>
+
+               // Log events to the console
+              val in = Iteratee.foreach[String](println).map { _ =>
+                println("Disconnected")
+              }
+
+              // Send a single 'Hello!' message
+              val out = Enumerator("Hello!")
+
+             (in, out)
+            }
+	</pre>	
+
 	<ul>
-	   <li>abstraction over data streams</li>
-	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
-	   <li>websockets in our case</li>
-	   <li>Iteratee => Consumer</li>
-	   <li>Enumerator => Producer</li>
+	   <li>You have to provide in and out channels</li>
+	   <li>you can get a broadcast channel on which you  can listen</li>
+	   <li>
+               <pre> 		
+  		 // Concurrent.broadcast returns (Enumerator, Concurrent.Channel)
+  		 val (out, channel) = Concurrent.broadcast[String]
+               </pre>
+           </li>
+	   <li>
+	       We used this approach in the beginnig and the we combined it with the Web Socket Actors
+	   </li>
 	</ul>
+    </section>
+
+    <section class="slide">
+    <h2>Web Sockets - Actors</h2>
+	<pre>
+	     import play.api.mvc._
+	     import play.api.Play.current
+
+	     def socket = WebSocket.acceptWithActor[JsValue, JsValu] { request => out =>
+               MyWebSocketActor.props(out)
+	     }      
+        </pre>	
+	<ul>
+	   <li><h4>tryAcceptWith</h4> - deny a message - if user is not present</li>
+	   <li><h4>cleaning resources</h4> - when websocket is closed - actor is stopped
+	        <pre>
+	        	override def postStop() = {
+  				someResource.close()
+			}
+                </pre>
+	   </li>
+	   <li><h4>message types</h4> 
+	   	String, ArrayByte, JSValue - parsed from String, implicit FrameFormatter
+	   </li>
+	   <li><a href="http://www.playframework.com/documentation/2.3.x/ScalaWebSockets">http://www.playframework.com/documentation/2.3.x/ScalaWebSockets</a></li>
+	</ul>
+	
     </section>
 
     <section class="slide">
