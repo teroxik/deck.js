@@ -32,6 +32,9 @@
 <body>
   <div class="deck-container">
 
+
+
+
     <!-- Begin slides. Just make elements with a class of slide. -->
 
     <section class="slide">
@@ -275,6 +278,13 @@
     </section>
 
     <section class="slide">
+      <h2>3D object</h2>
+	<div id="canvas"></div>
+    </section>
+
+
+
+    <section class="slide">
       <h2>Scalaz</h2>
 	
 	<ul>
@@ -356,11 +366,59 @@ http://eed3si9n.com/learning-scalaz/Validation.html
 <script src="extensions/navigation/deck.navigation.js"></script>
 <script src="extensions/scale/deck.scale.js"></script>
 
+
 <!-- Initialize the deck. You can put this in an external file if desired. -->
 <script>
   $(function() {
     $.deck('.slide');
   });
 </script>
+
+
+    <script src="http://www.html5canvastutorials.com/libraries/three.min.js"></script>
+    <script defer="defer">
+      // revolutions per second
+      var angularSpeed = 0.2; 
+      var lastTime = 0;
+ 
+      // this function is executed on each animation frame
+      function animate(){
+        // update
+        var time = (new Date()).getTime();
+        var timeDiff = time - lastTime;
+        var angleChange = angularSpeed * timeDiff * 2 * Math.PI / 1000;
+        cube.rotation.y += angleChange;
+        lastTime = time;
+ 
+        // render
+        renderer.render(scene, camera);
+ 
+        // request new frame
+        requestAnimationFrame(function(){
+            animate();
+        });
+      }
+
+      // renderer
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById("canvas").appendChild(renderer.domElement);
+ 
+      // camera
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.z = 500;
+ 
+      // scene
+      var scene = new THREE.Scene();
+                
+      // cube
+      var cube = new THREE.Mesh(new THREE.CubeGeometry(200, 200, 200), new THREE.MeshNormalMaterial());
+      cube.overdraw = true;
+      scene.add(cube);
+ 
+      // start animation
+      animate();
+    </script>
+
 </body>
 </html>
