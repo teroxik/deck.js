@@ -36,33 +36,190 @@
 
     <section class="slide">
       <h1>Reactive Orientation</h1>
-      <h3>@martin_zapletal, @teroxik</h3>
+      <h3>@zapletal_martin, @teroxik</h3>
     </section>
 
     <section class="slide">
-     <h2>Contents</h2>
-      <ol>
-        <li>
-          <h3>Play 2.3 - Iteratees</h3>
-          <p>Changes + Iteratees/Websockets Play integration and introduction</p>
-        </li>
-        <li>
-          <h3>EmberJS</h3>
-          <p>Basic introduction</p>
-        </li>
-        <li>
-          <h3>ScalaZ</h3>
-          <p>Add extra functionality to your deck, or leave it stripped&nbsp;down.</p>
-        </li>
-	<li>
-          <h3>WebGL + Three.js</h3>
-          <p>JsFiddle + Small Introduction</p>
-        </li>
-        <li>
-          <h3>Live Test of The Activator</h3>
-          <p>Lets try to destroy our demo app.</p>
-        </li>
-      </ol>
+      <h2>Application overview</h2>
+      <ul> 
+      	<li> HTML5 orientation API </li>
+      	<li> Ember.js </li>
+      	<li> Three.js </li>
+      	<li> Play framework 2.3 
+		<ul>
+		      	<li> Iteratee/Enumerator </API>
+		      	<li> Web socket actors </API>
+			<li> sbt-web </API>
+		</ul>
+	</li>
+      	<li> Scalaz </li>
+      	<li> Bootstrap	 </li>
+      </ul>
+    </section>
+
+    <section class="slide">
+	<h2>HTML 5 orientation API</h2>
+	<p><img src="images/motion-control.jpg"></p>
+    </section>
+
+    
+    <section class="slide">
+	<h2>HTML 5 orienation </h2>
+    	<ul>
+	  <li><h3>DeviceOrientationEvent</h3>
+              <p>Event provides values in degrees which are difference between device and earth coordinates.
+	      <pre>window.addEventListener("deviceorientation", processEvent, true);</pre>
+	      <img src="images/axes.png" >
+	  </li>
+	 </ul>
+	
+    </section>
+
+        
+    <section class="slide">
+	<h2>HTML 5 orienation </h2>
+    	<ul>
+	  <li><h4>DeviceOrientationEvent.alpha</h4> 
+		<p>the motion of the device around the z axis, <0,360> </p>
+		<img src="images/alpha.png" >
+	  </li>	  
+	 </ul>	
+    </section>
+
+
+        
+    <section class="slide">
+	<h2>HTML 5 orienation </h2>
+    	<ul>
+	  <li><h4>DeviceOrientationEvent.beta</h4>
+		<p>the motion of the device around the x axis, <-180,180></p>
+		<img src="images/beta.png" >
+	  </li>
+	 </ul>
+	
+    </section>
+
+        
+    <section class="slide">
+	<h2>HTML 5 orienation </h2>
+    	<ul>
+          <li><h4>DeviceOrientationEvent.gamma</h4> 
+		 <p>the motion of the device around the y axis, <-90,90></p>
+
+		<img src="images/gamma.png" >
+	  </li>
+	 </ul>
+	
+    </section>
+
+
+    <section class="slide">
+	<h2>Rotation</h2>
+	<p>Rotation is described about any given axis in terms of the number of degrees of difference between the device's coordinate frame and the Earth coordinate frame, and is measured in degrees.<p>
+	<ul>
+
+	  <li>
+		Earth Coordinates
+		<ul>
+		  <li>The <b>X</b> axis follows along the ground plane, perpendicular to the Y axis and positive toward the east (and therefore negative toward the west).</li>
+		  <li>The <b>Y</b> axis follows along the ground plane, and is positive toward true north (that is, the North Pole, not magnetic north) and negative toward true south.</li>
+		  <li>The <b>Z</b> axis is perpendicular to the ground plane; think of it as a line drawn between the device and the center of the Earth. The value of the Z coordinate is positive upward (away from the center of the Earth) and negative downward (toward the center of the Earth).</li>
+		</ul>
+	  </li>
+	  <li>
+	  	Device Coordinates
+		<ul>
+		  <li>The <b>X</b> axis is in the plane of the screen and is positive toward the right and negative toward the left.</li>
+		  <li>The <b>Y</b> axis is in the plane of the screen and is positive toward the top and negative toward the bottom.</li>
+		  <li>The <b>Z</b> axis is perpendicular to the screen or keyboard, and is positive extending outward from the screen.</li>
+		</ul>
+	  </li>
+	</ul>
+    </section>
+
+
+    <section class="slide">
+	<h2>HTML 5 orientation API - Caveats + Support</h2>
+		<img src="images/html5.jpg">
+	<ul>
+	  <li><h3>Support</h3>
+	  	<p>Supported by most of the Android(Firefox,Chrome) and iOS-based browsers</p>
+		<p>Not supported by default Android browsers in older versions</p>
+	  </li>
+	  <li><h3>Caveats</h3>
+	 	iOS-based browsers deviceOrientationData.alpha as an arbitrary non-compass-based value. 
+		It has to be recomputed = (360 - deviceOrientationData.webkitCompassHeading)
+	  <li><h3>Links</h3>
+		<p><a href="http://dev.opera.com/articles/w3c-device-orientation-usage/">http://dev.opera.com/articles/w3c-device-orientation-usage/</a></p>
+	  </li>
+	</ul>
+    </section>
+
+    <section class="slide">
+    <h2>Iteratee/Enumerator/Enumeratee</h2>
+	<ul>
+	   <li>abstraction over data streams</li>
+	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
+	   <li>websockets in our case</li>
+	   <li>Iteratee => Consumer</li>
+	   <li>Enumerator => Producer</li>
+	</ul>
+    </section>
+   
+    <section class="slide">
+    <h2>Iteratee</h2>
+	<ul>
+	   <li>abstraction over data streams</li>
+	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
+	   <li>websockets in our case</li>
+	   <li>Iteratee => Consumer</li>
+	   <li>Enumerator => Producer</li>
+	</ul>
+    </section>
+
+    <section class="slide">
+    <h2>Enumerator</h2>
+	<ul>
+	   <li>abstraction over data streams</li>
+	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
+	   <li>websockets in our case</li>
+	   <li>Iteratee => Consumer</li>
+	   <li>Enumerator => Producer</li>
+	</ul>
+    </section>
+
+   <section class="slide">
+    <h2>Enumeratee</h2>
+	<ul>
+	   <li>abstraction over data streams</li>
+	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
+	   <li>websockets in our case</li>
+	   <li>Iteratee => Consumer</li>
+	   <li>Enumerator => Producer</li>
+	</ul>
+    </section>
+
+
+    <section class="slide">
+    <h2>Web Socket Actors</h2>
+	<ul>
+	   <li>abstraction over data streams</li>
+	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
+	   <li>websockets in our case</li>
+	   <li>Iteratee => Consumer</li>
+	   <li>Enumerator => Producer</li>
+	</ul>
+    </section>
+
+    <section class="slide">
+    <h2>Sneak peak - sbt-web</h2>
+	<ul>
+	   <li>abstraction over data streams</li>
+	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
+	   <li>websockets in our case</li>
+	   <li>Iteratee => Consumer</li>
+	   <li>Enumerator => Producer</li>
+	</ul>
     </section>
 
     <section class="slide">
@@ -117,6 +274,49 @@
       </ol>
     </section>
 
+    <section class="slide">
+      <h2>Scalaz</h2>
+	
+	<ul>
+		<li> The coolest library noone uses. </li>
+		<li> Provides purely functional data structures to complement those from the Scala standard library </li>
+		<li> Requires deep understanding of functional programming idioms </li>
+		<li> The good parts of Scalaz </li>
+	</ul>
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>Typeclasses</h4>
+	3.show()
+	1.node(2.leaf, 3.node(4.leaf))
+	List(some(1), none).suml
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>Validation</h4>
+	"event 1 ok".success[String]
+	"event 1 failed!".failure[String]
+http://eed3si9n.com/learning-scalaz/Validation.html
+	 ("event 1 ok".success[String] |@| "event 2 failed!".failure[String] |@| "event 3 failed!".failure[String]) {_ + _ + _}
+	\/
+    </section>
+ 
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>Lenses</h4>
+    </section>
+
+    <section class="slide">
+      <h2>Scalaz</h2>
+      <h4>For experts</h4>
+    </section>
+
+    <section class="slide">
+      <h2>Questions?</h2>
+      <h4>Thank you for your patience!</h4>
+    </section>
     <!-- End slides. -->
 
     <!-- Begin extension snippets. Add or remove as needed. -->
