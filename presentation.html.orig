@@ -403,22 +403,20 @@ def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
       </ul>
     </section>
 
+<<<<<<< HEAD
  <section class="slide">
    <h2>Ember.js</h2>
-   <img src="images/global_199941742.jpeg"  style="width:300px; height: auto; float: center">
-
    <ul>
      <li>js single page web application framework</li>
      <li>MVC (MVVM)</li>
      <li>data binding</li>
      <li>convention over configuration</li>
-     <li><a href="http://todomvc.com/">Better than Angular?</a></li>
    </ul>
  </section>
 
   <section class="slide">
    <h2>Ember.js</h2>
-<img src="images/tomster-under-construction.png"  style="width:300px; height: auto; float: center">
+
   <ul>
      <li>Model</li>
      <li>Router</li>
@@ -429,12 +427,10 @@ def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
    </ul>
   </section>
 
- <section class="slide">
+  <section class="slide">
    <h2>Ember.js</h2>
-    <img src="images/app-sketch.png" style="float:right">
-    <img src="images/ember-sketch.png" style="float:left">
-  </section>
-
+    <img url="app-sketch.png">
+    <img url="ember-sketch.png">
   </section>
 
  <section class="slide">
@@ -489,11 +485,12 @@ def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
       })
   </pre>
   </section> 
-     <section class="slide">
+=======
+    <section class="slide">
       <h2>Questions?</h2>
       <h4>Thank you for your patience!</h4>
     </section>
-
+>>>>>>> upstream/master
     <!-- End slides. -->
 
     <!-- Begin extension snippets. Add or remove as needed. -->
