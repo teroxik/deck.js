@@ -1,0 +1,70 @@
+cohoist[M[_], N[_]: Comonad](f: M ~> N): ({type f[x] = F[M, x]})#f ~> ({type f[x] = F[N, x]})#f
+
+def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
+  a.subst[({type λ[-α]= T[A, α] <~< T[A, Z]})#λ](refl)
+
+Typeclasses
+
+Equal
+1 ==1
+1 == "foo"
+1 === 1
+1 === “foo”
+1 =/= 2
+
+Order
+1 > 1.0
+1 gt 1.0
+1 ?|? 2
+lt, gt, lte, gte, min, and max
+
+Enum
+3 |-> 5
+3 |=> 5
+'A'.succ.succ.succ
+for { x <- 1 |-> 50 if x.shows contains '7' } yield x
+
+Either
+Right(5).map(x => x + 1)
+
+\/
+1.left
+1.right
+
+5.right map (_ + 1)
+\/-(5) map (_ + 1)
+
+Functor
+(((x: Int) => x + 1) map (_ * 7))(5)
+
+(_: Int) * 2
+Functor[List].lift {(_: Int) * 2} 
+5.point[Option]
+5.pure[Option] 
+
+Applicative
+5.some map (_ + 3)
+5.some flatMap (x => 3.some map (y => x + y))
+
+1.some >>= (x => 2.some map (y => x +y))
+1.some >>= (x => 2.some >>= (y => (x + y).some))
+
+5.some <*> ((_: Int) * 5).some
+^(3.some, 5.some) (_+_)
+(3.some |@| 5.some |@| 7.some) {_ + _ + _}
+3.some |+| 5.some 
+
+(List(“a”, “b”, “c”) |@| List(“a”, “b”, “c”)) {_ + _}
+
+Validation
+("computation".success[String] |@| "computation 2".failure[String]) (_ + _)
+("computation".success[String] |@| "computation 2".failure[String] |@| "computation 3".failure[String]) (_ + _ + _)
+("computation".successNel[String] |@| "computation 2".failureNel[String] |@| "computation 3".failureNel[String]) (_ + _ + _)
+
+Lenses
+val dataLens = Lens.lensu[OrientationChangeEvent, OrientationChangeData] (
+      (a, value) => a.copy(data = value), _.data
+)
+
+dataLens mod ((data: OrientationChangeData) =>
+  OrientationChangeData(math.toRadians(data.alpha), math.toRadians(data.beta), math.toRadians(data.gamma)), event)

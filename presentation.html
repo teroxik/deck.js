@@ -64,41 +64,114 @@
       <h2>Scalaz</h2>
 	
 	<ul>
-		<li> The coolest library noone uses. </li>
 		<li> Provides purely functional data structures to complement those from the Scala standard library </li>
 		<li> Requires deep understanding of functional programming idioms </li>
 		<li> The good parts of Scalaz </li>
+    <li> <a href="http://www.cakesolutions.net/teamblogs/2011/11/19/u-s-scalaz-layout"> Keybord layout</a> </li>
+    <li><a href="https://github.com/scalaz/scalaz"> https://github.com/scalaz/scalaz </a></li>
 	</ul>
     </section>
 
     <section class="slide">
       <h2>Scalaz</h2>
-      <h4>Typeclasses</h4>
-	3.show()
-	1.node(2.leaf, 3.node(4.leaf))
-	List(some(1), none).suml
-    </section>
-
-    <section class="slide">
-      <h2>Scalaz</h2>
-      <h4>Validation</h4>
-	"event 1 ok".success[String]
-	"event 1 failed!".failure[String]
-http://eed3si9n.com/learning-scalaz/Validation.html
-	 ("event 1 ok".success[String] |@| "event 2 failed!".failure[String] |@| "event 3 failed!".failure[String]) {_ + _ + _}
-	\/
-    </section>
  
-    <section class="slide">
-      <h2>Scalaz</h2>
-      <h4>Lenses</h4>
+ cohoist[M[_], N[_]: Comonad](f: M ~> N): ({type f[x] = F[M, x]})#f ~> ({type f[x] = F[N, x]})#f
+ <br\>
+def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
+  a.subst[({type λ[-α]= T[A, α] <~< T[A, Z]})#λ](refl)
     </section>
 
     <section class="slide">
-      <h2>Scalaz</h2>
-      <h4>For experts</h4>
+        <h2>Scalaz</h2>
+      <ul>
+        <li>Typeclasses</li>
+        <li>Functors, applicatives, monoids, monads</li>
+        <li>Validation</li>
+        <li>Lenses</li>
+      </ul>
     </section>
 
+ <section class="slide">
+   <h2>Ember.js</h2>
+   <ul>
+     <li>js single page web application framework</li>
+     <li>MVC (MVVM)</li>
+     <li>data binding</li>
+     <li>convention over configuration</li>
+   </ul>
+ </section>
+
+  <section class="slide">
+   <h2>Ember.js</h2>
+
+  <ul>
+     <li>Model</li>
+     <li>Router</li>
+     <li>Route</li>
+     <li>Controller</li>
+     <li>Views</li>
+     <li>Template</li>
+   </ul>
+  </section>
+
+  <section class="slide">
+   <h2>Ember.js</h2>
+    <img url="app-sketch.png">
+    <img url="ember-sketch.png">
+  </section>
+
+ <section class="slide">
+   <h2>Ember.js</h2>
+
+   <pre>
+      var Person = Ember.Object.extend({
+        say: function(thing) {
+          var name = this.get('name');
+          alert(name + " says " + thing);
+        }
+      });
+
+      var Soldier = Person.extend({
+        say: function(thing) {
+          this._super(thing + ", sir!");
+        }
+      });
+
+      var inst = Soldier.create({
+        name: "John"
+      })
+
+      inst.say("Yes");
+   </pre>
+ </section>  
+
+<section class="slide">
+  <h2>Ember.js</h2>
+<pre>
+      var Person = Ember.Object.extend({
+        firstName: null,
+        lastName: null,
+
+        displayName: function() {
+          return this.get('firstName') + " " + this.get('lastName');
+        }.property('firstName', 'lastName'),
+
+        nameChanged: function() {
+          //do something
+        }.observer('fullname');
+      });
+   </pre>
+ </section>  
+
+ <section class="slide">
+  <h2>Ember.js</h2>
+  <pre>
+      App.Person = DS.Model.extend({
+        firstName: DS.attr('string'),
+        lastName: DS.attr('string')
+      })
+  </pre>
+  </section> 
     <!-- End slides. -->
 
     <!-- Begin extension snippets. Add or remove as needed. -->
