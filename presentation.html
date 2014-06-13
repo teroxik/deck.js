@@ -60,140 +60,6 @@
       </ul>
     </section>
 
-    <section class="slide">
-	<h2>HTML 5 orientation API</h2>
-	<p><img src="images/motion-control.jpg"></p>
-    </section>
-
-    
-    <section class="slide">
-	<h2>HTML 5 orienation </h2>
-    	<ul>
-	  <li><h3>DeviceOrientationEvent</h3>
-              <p>Event provides values in degrees which are difference between device and earth coordinates.
-	      <pre>window.addEventListener("deviceorientation", processEvent, true);</pre>
-	      <img src="images/axes.png" >
-	  </li>
-	 </ul>
-	
-    </section>
-
-        
-    <section class="slide">
-	<h2>HTML 5 orienation </h2>
-    	<ul>
-	  <li><h4>DeviceOrientationEvent.alpha</h4> 
-		<p>the motion of the device around the z axis, <0,360> </p>
-		<img src="images/alpha.png" >
-	  </li>	  
-	 </ul>	
-    </section>
-
-
-        
-    <section class="slide">
-	<h2>HTML 5 orienation </h2>
-    	<ul>
-	  <li><h4>DeviceOrientationEvent.beta</h4>
-		<p>the motion of the device around the x axis, <-180,180></p>
-		<img src="images/beta.png" >
-	  </li>
-	 </ul>
-	
-    </section>
-
-        
-    <section class="slide">
-	<h2>HTML 5 orienation </h2>
-    	<ul>
-          <li><h4>DeviceOrientationEvent.gamma</h4> 
-		 <p>the motion of the device around the y axis, <-90,90></p>
-
-		<img src="images/gamma.png" >
-	  </li>
-	 </ul>
-	
-    </section>
-
-
-    <section class="slide">
-	<h2>Rotation</h2>
-	<p>Rotation is described about any given axis in terms of the number of degrees of difference between the device's coordinate frame and the Earth coordinate frame, and is measured in degrees.<p>
-	<ul>
-
-	  <li>
-		Earth Coordinates
-		<ul>
-		  <li>The <b>X</b> axis follows along the ground plane, perpendicular to the Y axis and positive toward the east (and therefore negative toward the west).</li>
-		  <li>The <b>Y</b> axis follows along the ground plane, and is positive toward true north (that is, the North Pole, not magnetic north) and negative toward true south.</li>
-		  <li>The <b>Z</b> axis is perpendicular to the ground plane; think of it as a line drawn between the device and the center of the Earth. The value of the Z coordinate is positive upward (away from the center of the Earth) and negative downward (toward the center of the Earth).</li>
-		</ul>
-	  </li>
-	</ul>
-    </section>
-
-      <section class="slide">
-	<h2>HTML 5 orientation API - Code Snippet</h2>
-	<pre>
-	 if(window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', function(event) {
-                if (self.get("startOn")) {
-                    var orientationData = 
-		    Orientation.calculateEulerOrientationForDevice(event);
-
-                    var data = {
-                        deviceInfo: self.model.deviceInfo,
-                        deviceId: self.model.deviceId,
-                        colour: self.model.colour,
-                        data: orientationData
-                    };
-
-                    self.set('model', data)
-                    self.socket.send(JSON.stringify(data));
-                }
-            }, false);
-        }
-	</pre>
-    </section>
-
-    <section class="slide">
-	<h2>Science Fun - Apollo 11</h2>
-	
-	 <img src="images/gimbal.gif" style="float:left">
-	 <img src="images/lock.gif" style="float:right">
-	<div style="clear:both"></div>
-	<div>
-	<p><blockquote cite="http://example.org">
-  	<p>The advantages of the redundant gimbal seem to be outweighed by the equipment simplicity, size advantages, and corresponding implied reliability of the direct three degree of freedom unit.
-    	</p>
-  	<p><cite>David Hoag, Apollo Lunar Surface Journal</cite></p></blockquote></p>
-	<p><blockquote cite="http://example.org">
-	<p>Near that point, in a closed stabilization loop, the torque motors could theoretically be commanded to flip the gimbal 180 degrees instantaneously. Instead, in the LM, the computer flashed a 		   'gimbal lock' warning at 70 degrees and froze the IMU at 85 degrees"
-    	</p>
-  	<p><cite>Paul Fjeld, Apollo Lunar Surface Journal</cite></p></blockquote></p>
-	</div>
-    </section>
-
-
-    <section class="slide">
-	<h2>HTML 5 orientation - Caveats + Support </h2>
-		
-	<ul>
-	  <li><h3>Support</h3>
-	  	<p>Supported by most of the Android(Firefox,Chrome) and iOS-based browsers</p>
-		<p>Not supported by default Android browsers in older versions</p>
-	  </li>
-	  <li><h3>Caveats</h3>
-	 	<p>iOS-based browsers deviceOrientationData.alpha as an arbitrary non-compass-based value. 
-		It has to be recomputed = (360 - deviceOrientationData.webkitCompassHeading)</p>
-		<p>It is not possible to use these values directly for orientation - because of gimbal lock - if the angles get too close we don't know aroud which axis wea are spinnign</p>
-		<p>Solution: matrix based rotation system, quaternion based system</p>
-	  <li><h3>Links</h3>
-		<p><a href="http://dev.opera.com/articles/w3c-device-orientation-usage/">http://dev.opera.com/articles/w3c-device-orientation-usage/</a></p>
-	  </li>
-	</ul>
-    </section>
-
   
 
     <section class="slide">
@@ -321,76 +187,26 @@
 	
     </section>
 
-    <section class="slide">
-      <h2>Three.js</h2>
-	<ol>
-        <li>
-          <h3>Camera</h3>
-          <p>Slide content is simple&nbsp;HTML.</p>
-        </li>
-        <li>
-          <h3>Scene</h3>
-          <p>Container for all the objects</p>
-        </li>
-        <li>
-          <h3>Mesh</h3>
-          <p>geometries + materials => objects in the scene, lights => shadows generation</p>
-        </li>
-	<li>
-          <h3>Renderer</h3>
-          <pre>
-		
-		function animate() {
-
-		    requestAnimationFrame(animate);
-		    render();
-
-		}
-
-		function render() {
-
-		    mesh.rotation.x += 0.02;
-		    mesh.rotation.z += 0.03;
-
-		    renderer.render(scene, camera);
-		}
-		
-	  </pre>
-        </li>
-        <li>
-          <h3>Coordinates</h3>
-          <p> <-1;1> </p>
-        </li>
-      </ol>
-    </section>
-
-    <section class="slide">
-      <h2>3D object</h2>
-	<div id="canvas"></div>
-	<p><a href="http://jsfiddle.net/teroxik/4Rqgq/">http://jsfiddle.net/teroxik/4Rqgq/</a></p>
-    </section>
-
-
-
-    <section class="slide">
+     <section class="slide">
       <h2>Scalaz</h2>
-	
-	<ul>
-		<li> Provides purely functional data structures to complement those from the Scala standard library </li>
-		<li> Requires deep understanding of functional programming idioms </li>
-		<li> The good parts of Scalaz </li>
+  
+  <ul>
+    <li> Provides purely functional data structures to complement those from the Scala standard library </li>
+    <li> Requires deep understanding of functional programming idioms </li>
+    <li> The good parts of Scalaz </li>
     <li> <a href="http://www.cakesolutions.net/teamblogs/2011/11/19/u-s-scalaz-layout"> Keybord layout</a> </li>
     <li><a href="https://github.com/scalaz/scalaz"> https://github.com/scalaz/scalaz </a></li>
-	</ul>
+  </ul>
     </section>
 
     <section class="slide">
       <h2>Scalaz</h2>
- 
+ <pre>
  cohoist[M[_], N[_]: Comonad](f: M ~> N): ({type f[x] = F[M, x]})#f ~> ({type f[x] = F[N, x]})#f
  <br\>
 def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
   a.subst[({type λ[-α]= T[A, α] <~< T[A, Z]})#λ](refl)
+</pre>
     </section>
 
     <section class="slide">
@@ -402,6 +218,141 @@ def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
         <li>Lenses</li>
       </ul>
     </section>
+
+    <section class="slide">
+  <h2>HTML 5 orientation API</h2>
+  <p><img src="images/motion-control.jpg"></p>
+    </section>
+
+    
+    <section class="slide">
+  <h2>HTML 5 orienation </h2>
+      <ul>
+    <li><h3>DeviceOrientationEvent</h3>
+              <p>Event provides values in degrees which are difference between device and earth coordinates.
+        <pre>window.addEventListener("deviceorientation", processEvent, true);</pre>
+        <img src="images/axes.png" >
+    </li>
+   </ul>
+  
+    </section>
+
+        
+    <section class="slide">
+  <h2>HTML 5 orienation </h2>
+      <ul>
+    <li><h4>DeviceOrientationEvent.alpha</h4> 
+    <p>the motion of the device around the z axis, <0,360> </p>
+    <img src="images/alpha.png" >
+    </li>   
+   </ul>  
+    </section>
+
+
+        
+    <section class="slide">
+  <h2>HTML 5 orienation </h2>
+      <ul>
+    <li><h4>DeviceOrientationEvent.beta</h4>
+    <p>the motion of the device around the x axis, <-180,180></p>
+    <img src="images/beta.png" >
+    </li>
+   </ul>
+  
+    </section>
+
+        
+    <section class="slide">
+  <h2>HTML 5 orienation </h2>
+      <ul>
+          <li><h4>DeviceOrientationEvent.gamma</h4> 
+     <p>the motion of the device around the y axis, <-90,90></p>
+
+    <img src="images/gamma.png" >
+    </li>
+   </ul>
+  
+    </section>
+
+
+    <section class="slide">
+  <h2>Rotation</h2>
+  <p>Rotation is described about any given axis in terms of the number of degrees of difference between the device's coordinate frame and the Earth coordinate frame, and is measured in degrees.<p>
+  <ul>
+
+    <li>
+    Earth Coordinates
+    <ul>
+      <li>The <b>X</b> axis follows along the ground plane, perpendicular to the Y axis and positive toward the east (and therefore negative toward the west).</li>
+      <li>The <b>Y</b> axis follows along the ground plane, and is positive toward true north (that is, the North Pole, not magnetic north) and negative toward true south.</li>
+      <li>The <b>Z</b> axis is perpendicular to the ground plane; think of it as a line drawn between the device and the center of the Earth. The value of the Z coordinate is positive upward (away from the center of the Earth) and negative downward (toward the center of the Earth).</li>
+    </ul>
+    </li>
+  </ul>
+    </section>
+
+      <section class="slide">
+  <h2>HTML 5 orientation API - Code Snippet</h2>
+  <pre>
+   if(window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                if (self.get("startOn")) {
+                    var orientationData = 
+        Orientation.calculateEulerOrientationForDevice(event);
+
+                    var data = {
+                        deviceInfo: self.model.deviceInfo,
+                        deviceId: self.model.deviceId,
+                        colour: self.model.colour,
+                        data: orientationData
+                    };
+
+                    self.set('model', data)
+                    self.socket.send(JSON.stringify(data));
+                }
+            }, false);
+        }
+  </pre>
+    </section>
+
+    <section class="slide">
+  <h2>Science Fun - Apollo 11</h2>
+  
+   <img src="images/gimbal.gif" style="float:left">
+   <img src="images/lock.gif" style="float:right">
+  <div style="clear:both"></div>
+  <div>
+  <p><blockquote cite="http://example.org">
+    <p>The advantages of the redundant gimbal seem to be outweighed by the equipment simplicity, size advantages, and corresponding implied reliability of the direct three degree of freedom unit.
+      </p>
+    <p><cite>David Hoag, Apollo Lunar Surface Journal</cite></p></blockquote></p>
+  <p><blockquote cite="http://example.org">
+  <p>Near that point, in a closed stabilization loop, the torque motors could theoretically be commanded to flip the gimbal 180 degrees instantaneously. Instead, in the LM, the computer flashed a        'gimbal lock' warning at 70 degrees and froze the IMU at 85 degrees"
+      </p>
+    <p><cite>Paul Fjeld, Apollo Lunar Surface Journal</cite></p></blockquote></p>
+  </div>
+    </section>
+
+
+    <section class="slide">
+  <h2>HTML 5 orientation - Caveats + Support </h2>
+    
+  <ul>
+    <li><h3>Support</h3>
+      <p>Supported by most of the Android(Firefox,Chrome) and iOS-based browsers</p>
+    <p>Not supported by default Android browsers in older versions</p>
+    </li>
+    <li><h3>Caveats</h3>
+    <p>iOS-based browsers deviceOrientationData.alpha as an arbitrary non-compass-based value. 
+    It has to be recomputed = (360 - deviceOrientationData.webkitCompassHeading)</p>
+    <p>It is not possible to use these values directly for orientation - because of gimbal lock - if the angles get too close we don't know aroud which axis wea are spinnign</p>
+    <p>Solution: matrix based rotation system, quaternion based system</p>
+    <li><h3>Links</h3>
+    <p><a href="http://dev.opera.com/articles/w3c-device-orientation-usage/">http://dev.opera.com/articles/w3c-device-orientation-usage/</a></p>
+    </li>
+  </ul>
+    </section>
+
 
  <section class="slide">
    <h2>Ember.js</h2>
@@ -424,7 +375,7 @@ def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
      <li>Router</li>
      <li>Route</li>
      <li>Controller</li>
-     <li>Views</li>
+     <li>View</li>
      <li>Template</li>
    </ul>
   </section>
@@ -489,6 +440,60 @@ def co2_2[T[_, +_], Z, A, B](a: B <~< Z): T[A, B] <~< T[A, Z] =
       })
   </pre>
   </section> 
+
+
+
+    <section class="slide">
+      <h2>Three.js</h2>
+	<ol>
+        <li>
+          <h3>Camera</h3>
+          <p>Slide content is simple&nbsp;HTML.</p>
+        </li>
+        <li>
+          <h3>Scene</h3>
+          <p>Container for all the objects</p>
+        </li>
+        <li>
+          <h3>Mesh</h3>
+          <p>geometries + materials => objects in the scene, lights => shadows generation</p>
+        </li>
+	<li>
+          <h3>Renderer</h3>
+          <pre>
+		
+		function animate() {
+
+		    requestAnimationFrame(animate);
+		    render();
+
+		}
+
+		function render() {
+
+		    mesh.rotation.x += 0.02;
+		    mesh.rotation.z += 0.03;
+
+		    renderer.render(scene, camera);
+		}
+		
+	  </pre>
+        </li>
+        <li>
+          <h3>Coordinates</h3>
+          <p> <-1;1> </p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>3D object</h2>
+	<div id="canvas"></div>
+	<p><a href="http://jsfiddle.net/teroxik/4Rqgq/">http://jsfiddle.net/teroxik/4Rqgq/</a></p>
+    </section>
+
+
+
      <section class="slide">
       <h2>Questions?</h2>
       <h4>Thank you for your patience!</h4>
