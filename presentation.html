@@ -129,76 +129,118 @@
 		  <li>The <b>Z</b> axis is perpendicular to the ground plane; think of it as a line drawn between the device and the center of the Earth. The value of the Z coordinate is positive upward (away from the center of the Earth) and negative downward (toward the center of the Earth).</li>
 		</ul>
 	  </li>
-	  <li>
-	  	Device Coordinates
-		<ul>
-		  <li>The <b>X</b> axis is in the plane of the screen and is positive toward the right and negative toward the left.</li>
-		  <li>The <b>Y</b> axis is in the plane of the screen and is positive toward the top and negative toward the bottom.</li>
-		  <li>The <b>Z</b> axis is perpendicular to the screen or keyboard, and is positive extending outward from the screen.</li>
-		</ul>
-	  </li>
 	</ul>
+    </section>
+
+      <section class="slide">
+	<h2>HTML 5 orientation API - Code Snippet</h2>
+	<pre>
+	 if(window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                if (self.get("startOn")) {
+                    var orientationData = 
+		    Orientation.calculateEulerOrientationForDevice(event);
+
+                    var data = {
+                        deviceInfo: self.model.deviceInfo,
+                        deviceId: self.model.deviceId,
+                        colour: self.model.colour,
+                        data: orientationData
+                    };
+
+                    self.set('model', data)
+                    self.socket.send(JSON.stringify(data));
+                }
+            }, false);
+        }
+	</pre>
+    </section>
+
+    <section class="slide">
+	<h2>Science Fun - Apollo 11</h2>
+	
+	 <img src="images/gimbal.gif" style="float:left">
+	 <img src="images/lock.gif" style="float:right">
+	<div style="clear:both"></div>
+	<div>
+	<p><blockquote cite="http://example.org">
+  	<p>The advantages of the redundant gimbal seem to be outweighed by the equipment simplicity, size advantages, and corresponding implied reliability of the direct three degree of freedom unit.
+    	</p>
+  	<p><cite>David Hoag, Apollo Lunar Surface Journal</cite></p></blockquote></p>
+	<p><blockquote cite="http://example.org">
+	<p>Near that point, in a closed stabilization loop, the torque motors could theoretically be commanded to flip the gimbal 180 degrees instantaneously. Instead, in the LM, the computer flashed a 		   'gimbal lock' warning at 70 degrees and froze the IMU at 85 degrees"
+    	</p>
+  	<p><cite>Paul Fjeld, Apollo Lunar Surface Journal</cite></p></blockquote></p>
+	</div>
     </section>
 
 
     <section class="slide">
-	<h2>HTML 5 orientation API - Caveats + Support</h2>
-		<img src="images/html5.jpg">
+	<h2>HTML 5 orientation - Caveats + Support </h2>
+		
 	<ul>
 	  <li><h3>Support</h3>
 	  	<p>Supported by most of the Android(Firefox,Chrome) and iOS-based browsers</p>
 		<p>Not supported by default Android browsers in older versions</p>
 	  </li>
 	  <li><h3>Caveats</h3>
-	 	iOS-based browsers deviceOrientationData.alpha as an arbitrary non-compass-based value. 
-		It has to be recomputed = (360 - deviceOrientationData.webkitCompassHeading)
+	 	<p>iOS-based browsers deviceOrientationData.alpha as an arbitrary non-compass-based value. 
+		It has to be recomputed = (360 - deviceOrientationData.webkitCompassHeading)</p>
+		<p>It is not possible to use these values directly for orientation - because of gimbal lock - if the angles get too close we don't know aroud which axis wea are spinnign</p>
+		<p>Solution: matrix based rotation system, quaternion based system</p>
 	  <li><h3>Links</h3>
 		<p><a href="http://dev.opera.com/articles/w3c-device-orientation-usage/">http://dev.opera.com/articles/w3c-device-orientation-usage/</a></p>
 	  </li>
 	</ul>
     </section>
 
+  
+
     <section class="slide">
     <h2>Iteratee/Enumerator/Enumeratee</h2>
 	<ul>
 	   <li>abstraction over data streams</li>
 	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
-	   <li>websockets in our case</li>
+	   <li>Websockets in our case</li>
 	   <li>Iteratee => Consumer</li>
 	   <li>Enumerator => Producer</li>
+	   <li>Enumerator => Adapter</li>
 	</ul>
     </section>
    
     <section class="slide">
-    <h2>Iteratee</h2>
+    <h2>Iteratee/Enumerator/Enumeratee</h2>
 	<ul>
-	   <li>abstraction over data streams</li>
-	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
-	   <li>websockets in our case</li>
-	   <li>Iteratee => Consumer</li>
-	   <li>Enumerator => Producer</li>
-	</ul>
-    </section>
+	   <li>Iteratee => Consumer - Iteratee[A,E] - consumes value A and eventually produces value B
+	       <pre>	
+		object Step {
+  			case class Done[+A, E](a: A, remaining: Input[E]) extends Step[E, A]
+  			case class Cont[E, +A](k: Input[E] => Iteratee[E, A]) extends Step[E, A]
+  			case class Error[E](msg: String, input: Input[E]) extends Step[E, Nothing]
+		}
+		</pre>
+	       <p>Input[E] - El[E],Empty,EOF</p>
+           </li>
+	   <li>Enumerator => Producer, pushes data to Iteratee, contains methods for reading streams
+	       <pre>
+	 	 trait Enumerator[E] {
 
-    <section class="slide">
-    <h2>Enumerator</h2>
-	<ul>
-	   <li>abstraction over data streams</li>
-	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
-	   <li>websockets in our case</li>
-	   <li>Iteratee => Consumer</li>
-	   <li>Enumerator => Producer</li>
-	</ul>
-    </section>
+		  /**
+		   * Apply this Enumerator to an Iteratee
+		   */
+		  def apply[A](i: Iteratee[E, A]): Future[Iteratee[E, A]]
 
-   <section class="slide">
-    <h2>Enumeratee</h2>
-	<ul>
-	   <li>abstraction over data streams</li>
-	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
-	   <li>websockets in our case</li>
-	   <li>Iteratee => Consumer</li>
-	   <li>Enumerator => Producer</li>
+		}
+	       </pre>
+	       <p>Another method for creation of Enumerators is by using channels.</p>
+	       <pre>
+		 val enumerator = Concurrent.unicast[String](onStart = channel => {
+  			channel.push("Hello")
+  			channel.push("World")
+		 })
+	       </pre>
+           </li>
+	   <li>Enumeratee => Adapter - used for mapping Iteratees/Enumerators to Iteratees/Enumerators which accepts different types</li>
 	</ul>
     </section>
 
@@ -206,9 +248,9 @@
     <section class="slide">
     <h2>Web Sockets </h2>
 	<ul>
-	   <li>abstraction over data streams</li>
-	   <li>handle data streams reactively in a non-blocking, generic & composable way for modern web programming in distributed environments</li>
-	   <li>websockets in our case</li>
+	   <li>Call backs - onOpen, onClose, onMessage</li>
+	   <li>Two way realtime communication - send method</li>
+	   <li>well supported</li>
 	   <li>Iteratee => Consumer</li>
 	   <li>Enumerator => Producer</li>
 	</ul>
@@ -217,24 +259,17 @@
     <section class="slide">
     <h2>Web Sockets - Iteratees</h2>
 	<pre>
-	    import play.api.mvc._
-            import play.api.libs.iteratee._
-            import play.api.libs.concurrent.Execution.Implicits.defaultContext
+	    	  val (dataEnumerator, dataChannel) = Concurrent.broadcast[JsValue]
 
-            def socket = WebSocket.using[String] { request =>
+	
+		  def mobileWebSocket = WebSocket.acceptWithActor[OrientationChangeEvent, JsValue] { request => out =>
+		    Props(new StreamMergingActor(dataChannel))
+		  }
 
-               // Log events to the console
-              val in = Iteratee.foreach[String](println).map { _ =>
-                println("Disconnected")
-              }
-
-              // Send a single 'Hello!' message
-              val out = Enumerator("Hello!")
-
-             (in, out)
-            }
+		  def dashboardWebSocket = WebSocket.using[JsValue] { request =>
+		    (Iteratee.ignore, dataEnumerator)
+		  }
 	</pre>	
-
 	<ul>
 	   <li>You have to provide in and out channels</li>
 	   <li>you can get a broadcast channel on which you  can listen</li>
@@ -245,7 +280,7 @@
                </pre>
            </li>
 	   <li>
-	       We used this approach in the beginnig and the we combined it with the Web Socket Actors
+	       We used Iteratee/Enumerator approach in the beginning in the beginnig and the we combined it with the Web Socket Actors
 	   </li>
 	</ul>
     </section>
@@ -256,8 +291,8 @@
 	     import play.api.mvc._
 	     import play.api.Play.current
 
-	     def socket = WebSocket.acceptWithActor[JsValue, JsValu] { request => out =>
-               MyWebSocketActor.props(out)
+	     def socket = WebSocket.acceptWithActor[JsValue, JsValue] { request => out =>
+               	MyWebSocketActor.props(out)
 	     }      
         </pre>	
 	<ul>
@@ -269,38 +304,21 @@
 			}
                 </pre>
 	   </li>
-	   <li><h4>message types</h4> 
+	   <li><h4>Message types</h4> 
 	   	String, ArrayByte, JSValue - parsed from String, implicit FrameFormatter
 	   </li>
+	   <li><pre>
+		  def receive = {
+		    case e: OrientationChangeEvent =>
+		      println(self + e.toString)
+		      produceMessage(convertDegreesToRadians(e))
+		  }
+
+		  def produceMessage(event: OrientationChangeEvent) = dataChannel.push(Json.toJson(event))
+	    </pre></li>
 	   <li><a href="http://www.playframework.com/documentation/2.3.x/ScalaWebSockets">http://www.playframework.com/documentation/2.3.x/ScalaWebSockets</a></li>
 	</ul>
 	
-    </section>
-
-    <section class="slide">
-      <h2>WebGL</h2>
-	<ol>
-        <li>
-          <h3>WebGL is 2D API</h3>
-          <p>Slide content is simple&nbsp;HTML.</p>
-        </li>
-        <li>
-          <h3>Canvas</h3>
-          <p></p>
-        </li>
-        <li>
-          <h3>Vertex Shader</h3>
-          <p>Add extra functionality to your deck, or leave it stripped&nbsp;down.</p>
-        </li>
-	<li>
-          <h3>Fragment Shader</h3>
-          <p>JsFiddle + Small Introduction</p>
-        </li>
-        <li>
-          <h3>Coordinates</h3>
-          <p> <-1;1> </p>
-        </li>
-      </ol>
     </section>
 
     <section class="slide">
@@ -312,15 +330,32 @@
         </li>
         <li>
           <h3>Scene</h3>
-          <p></p>
+          <p>Container for all the objects</p>
         </li>
         <li>
-          <h3>Objects</h3>
-          <p>geometries => objects in the scene, lights => shadows generation</p>
+          <h3>Mesh</h3>
+          <p>geometries + materials => objects in the scene, lights => shadows generation</p>
         </li>
 	<li>
           <h3>Renderer</h3>
-          <p>JsFiddle + Small Introduction</p>
+          <pre>
+		
+		function animate() {
+
+		    requestAnimationFrame(animate);
+		    render();
+
+		}
+
+		function render() {
+
+		    mesh.rotation.x += 0.02;
+		    mesh.rotation.z += 0.03;
+
+		    renderer.render(scene, camera);
+		}
+		
+	  </pre>
         </li>
         <li>
           <h3>Coordinates</h3>
@@ -332,6 +367,7 @@
     <section class="slide">
       <h2>3D object</h2>
 	<div id="canvas"></div>
+	<p><a href="http://jsfiddle.net/teroxik/4Rqgq/">http://jsfiddle.net/teroxik/4Rqgq/</a></p>
     </section>
 
 
